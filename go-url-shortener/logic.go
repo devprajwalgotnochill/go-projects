@@ -38,6 +38,7 @@ func (s *URLShortener) generateCode(n int) string {
 var shortener = &URLShortener{store: make(map[string]*Link)}
 
 func formHandler(w http.ResponseWriter, r *http.Request) {
+
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ERROR: %v", err)
 		return
@@ -45,7 +46,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Get the URL from your HTML form input (name="url")
 	urlGet := r.FormValue("url")
-	if urlGet == "" {
+	if urlGet == "" || !strings.Contains(urlGet, ".") || len(urlGet) < 4 {
 		fmt.Fprint(w, "Please enter a URL")
 		return
 	}
